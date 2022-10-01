@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  dev-db-factoring:
+    container_name: dev-db-example2
+    restart: 'no'
+    build:
+      context: ""
+      dockerfile: Dockerfile
+    volumes:
+      - example2-db-data:/var/lib/postgresql/data
+    expose:
+      - 5432
+    ports:
+      - ${LOCAL_POSTGRES_EXTERNAL_PORT}:5432
+    environment:
+      - TZ=${LOCAL_POSTGRES_TZ}
+      - POSTGRES_USER=${LOCAL_POSTGRES_ADMIN_USERNAME}
+      - POSTGRES_PASSWORD=${LOCAL_POSTGRES_ADMIN_PASSWORD}
+
+volumes:
+  example2-db-data:
+    external: true
