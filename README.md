@@ -6,8 +6,9 @@ This code is presented as a prototype, based on the refactoring of a working sol
 
 ## Global db session ContextVar
 
-The session (AsyncSession) object provided by db.session is based on the Python3.7+ ContextVar. This means that each session is linked to the individual request context in which it was created.
-Thanks [h0rn3t](https://github.com/h0rn3t/fastapi-async-sqlalchemy)
+> The session (AsyncSession) object provided by db.session is based on the Python3.7+ ContextVar. This means that each session is linked to the individual request context in which it was created.
+
+Thanks to [h0rn3t](https://github.com/h0rn3t/fastapi-async-sqlalchemy) for implementing fastapi-middleware, which really avoids db-deadlocks during intensive DML queries to the database.
 
 Additional links:
 
@@ -29,14 +30,14 @@ The values of the query parameters filter, sort are transmitted in URL-encoded s
 ```
 {"property": "created","direction": "desc"}:
 
-?sort=%7B%22property%22%3A%20%22created%22,%22direction%22%3A%20%22desc%22%7D
+GET service-url/endpoint/?sort=%7B%22property%22%3A%20%22created%22,%22direction%22%3A%20%22desc%22%7D
 
 [
     {"property": "account","direction": "asc"},
     {"property": "created","direction": "desc"}
 ]:
 
-?sort=%5B%7B%22property%22%3A%20%22account%22,%22direction%22%3A%20%22asc%22%7D,%7B%22property%22%3A%20%22created%22,%22direction%22%3A%20%22desc%22%7D%5D
+GET service-url/endpoint/?sort=%5B%7B%22property%22%3A%20%22account%22,%22direction%22%3A%20%22asc%22%7D,%7B%22property%22%3A%20%22created%22,%22direction%22%3A%20%22desc%22%7D%5D
 ```
 
 ### Filter examples
@@ -47,11 +48,11 @@ The values of the query parameters filter, sort are transmitted in URL-encoded s
     {"property": "modified","operator": "<", "value": "2022-08-06"}
 ]:
 
-?filter=%5B%7B%22property%22%3A%20%22modified%22,%22operator%22%3A%20%22%3E%3D%22,%20%22value%22%3A%20%222022-08-01%22%7D,%7B%22property%22%3A%20%22modified%22,%22operator%22%3A%20%22%3C%22,%20%22value%22%3A%20%222022-08-06%22%7D%5D
+GET service-url/endpoint/?filter=%5B%7B%22property%22%3A%20%22modified%22,%22operator%22%3A%20%22%3E%3D%22,%20%22value%22%3A%20%222022-08-01%22%7D,%7B%22property%22%3A%20%22modified%22,%22operator%22%3A%20%22%3C%22,%20%22value%22%3A%20%222022-08-06%22%7D%5D
 
 {"property":"amount","operator":"=","value":119.8}
 
-?filter=%7B%22property%22%3A%22amount%22,%22operator%22%3A%22%3D%22,%22value%22%3A119.8%7D
+GET service-url/endpoint/?filter=%7B%22property%22%3A%22amount%22,%22operator%22%3A%22%3D%22,%22value%22%3A119.8%7D
 ```
 
 ### Run Service
