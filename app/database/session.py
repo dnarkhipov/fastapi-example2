@@ -20,10 +20,20 @@ def tstz_decoder(tup):
 
 
 if app_settings.TESTING:
-    async_engine = create_async_engine(app_settings.DB_TEST_DSN)
+    async_engine = create_async_engine(
+        app_settings.DB_TEST_DSN,
+        echo=app_settings.DB_SQL_ECHO,
+        # https://github.com/sqlalchemy/sqlalchemy/issues/7245
+        # https://docs.sqlalchemy.org/en/14/dialects/postgresql.html?highlight=server_settings#module-sqlalchemy.dialects.postgresql.asyncpg
+        connect_args={"server_settings": {"jit": "off", "timezone": app_settings.TZ}},
+    )
 else:
     async_engine = create_async_engine(
-        app_settings.DB_DSN, echo=app_settings.DB_SQL_ECHO
+        app_settings.DB_DSN,
+        echo=app_settings.DB_SQL_ECHO,
+        # https://github.com/sqlalchemy/sqlalchemy/issues/7245
+        # https://docs.sqlalchemy.org/en/14/dialects/postgresql.html?highlight=server_settings#module-sqlalchemy.dialects.postgresql.asyncpg
+        connect_args={"server_settings": {"jit": "off", "timezone": app_settings.TZ}},
     )
 
 
